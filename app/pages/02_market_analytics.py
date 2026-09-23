@@ -93,7 +93,6 @@ def render_page(df: pd.DataFrame):
                 x="GrLivArea",
                 y="SalePrice",
                 color="OverallQual",
-                trendline="ols",
                 labels={"GrLivArea": "Above-Ground Living Area (Sq Ft)", "SalePrice": "Sale Price ($)", "OverallQual": "Quality"}
             )
             fig_area.update_layout(height=380, margin=dict(l=20, r=20, t=30, b=20))
