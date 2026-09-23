@@ -20,19 +20,21 @@ from src.data.loader import load_raw_data
 from src.data.cleaner import clean_housing_data
 from src.features.engineering import engineer_housing_features
 
-# Import modular pages
-import app.pages.01_executive_overview as p01
-import app.pages.02_market_analytics as p02
-import app.pages.03_property_predictor as p03
-import app.pages.04_model_lab as p04
-import app.pages.05_model_explainability as p05
-import app.pages.06_risk_analysis as p06
-import app.pages.07_insights_actions as p07
-import app.pages.08_data_quality as p08
-import app.pages.09_methodology as p09
-import app.pages.10_monitoring as p10
-import app.pages.11_documentation as p11
-import app.pages.12_about as p12
+import importlib
+
+# Import modular pages dynamically
+p01 = importlib.import_module("app.pages.01_executive_overview")
+p02 = importlib.import_module("app.pages.02_market_analytics")
+p03 = importlib.import_module("app.pages.03_property_predictor")
+p04 = importlib.import_module("app.pages.04_model_lab")
+p05 = importlib.import_module("app.pages.05_model_explainability")
+p06 = importlib.import_module("app.pages.06_risk_analysis")
+p07 = importlib.import_module("app.pages.07_insights_actions")
+p08 = importlib.import_module("app.pages.08_data_quality")
+p09 = importlib.import_module("app.pages.09_methodology")
+p10 = importlib.import_module("app.pages.10_monitoring")
+p11 = importlib.import_module("app.pages.11_documentation")
+p12 = importlib.import_module("app.pages.12_about")
 
 @st.cache_data(show_spinner=False)
 def load_cached_dataset():
