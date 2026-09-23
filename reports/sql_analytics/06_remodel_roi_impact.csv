@@ -1,0 +1,6 @@
+age_era,remodel_status,total_sales,mean_sale_price,mean_price_per_sqft
+1950-1979,Remodeled,262,166949.0,121.7
+1950-1979,Original Condition,799,141622.0,114.17
+Post-1980,Remodeled,466,247611.0,140.24
+Post-1980,Original Condition,771,228578.0,138.81
+Pre-1950,Remodeled,632,128506.0,94.84

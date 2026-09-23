@@ -1,0 +1,5 @@
+construction_era,property_count,avg_age_at_sale_years,avg_sale_price,avg_price_per_sqft,min_price,max_price
+Modern (2000-2010),783,3.0,248521.0,145.81,84500.0,615000.0
+Late 20th Century (1980-1999),454,15.5,213718.0,128.21,93500.0,755000.0
+Post-War Boom (1950-1979),1061,42.9,147876.0,116.03,13100.0,375000.0
+Historic / Pre-War (< 1950),632,82.1,128506.0,94.84,12789.0,475000.0

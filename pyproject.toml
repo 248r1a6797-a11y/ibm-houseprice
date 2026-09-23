@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "housewise-ai"
+version = "1.0.0"
+description = "HouseWise AI — Explainable House Price Intelligence & Prediction Platform"
+authors = [
+    {name = "IBM Internship Project Team"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "joblib",
+    "pyyaml",
+    "pytest",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "streamlit",
+    "xgboost",
+    "lightgbm",
+    "shap"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

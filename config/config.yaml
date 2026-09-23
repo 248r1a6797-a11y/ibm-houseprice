@@ -1,0 +1,48 @@
+# HouseWise AI Central Configuration
+project_name: "HouseWise AI — Explainable House Price Intelligence Platform"
+version: "1.0.0"
+author: "IBM Internship Project / Advanced Data Science & Analytics Team"
+
+data:
+  raw_path: "data/raw/AmesHousing.csv"
+  documentation_path: "data/raw/DataDocumentation.txt"
+  interim_path: "data/interim/cleaned_housing.parquet"
+  processed_train_path: "data/processed/train.parquet"
+  processed_test_path: "data/processed/test.parquet"
+  data_profile_path: "reports/data_profile.json"
+  target_column: "SalePrice"
+  id_columns:
+    - "Order"
+    - "PID"
+  currency: "USD"
+  currency_symbol: "$"
+  date_columns:
+    year_sold: "YrSold"
+    month_sold: "MoSold"
+    year_built: "YearBuilt"
+    year_remodel: "YearRemod/Add"
+    garage_year_built: "GarageYrBlt"
+  geography_columns:
+    neighborhood: "Neighborhood"
+    ms_zoning: "MSZoning"
+
+modeling:
+  random_state: 42
+  test_size: 0.20
+  validation_folds: 5
+  primary_metric: "RMSE"
+  secondary_metrics:
+    - "MAE"
+    - "R2"
+    - "RMSLE"
+  price_transformation: "log1p" # options: "none", "log1p"
+  models_dir: "models/production"
+  candidate_dir: "models/candidate"
+  production_model_path: "models/production/production_model.joblib"
+  metadata_path: "models/production/model_metadata.json"
+
+dashboard:
+  title: "HouseWise AI"
+  subtitle: "Explainable House Price Intelligence & Prediction Platform"
+  theme_color: "#1E3A8A"
+  port: 8501

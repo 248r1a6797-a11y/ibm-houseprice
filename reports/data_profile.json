@@ -1,0 +1,112 @@
+{
+  "dataset_name": "Ames Housing Dataset (Dean De Cock, 2011)",
+  "rows": 2930,
+  "columns": 82,
+  "duplicate_rows": 0,
+  "target_column": "SalePrice",
+  "target_dtype": "int64",
+  "numeric_features_count": 39,
+  "categorical_features_count": 43,
+  "date_features": [
+    "YearBuilt",
+    "YearRemodAdd",
+    "GarageYrBlt",
+    "MoSold",
+    "YrSold"
+  ],
+  "potential_id_columns": [
+    "Order",
+    "PID"
+  ],
+  "total_missing_cells": 15749,
+  "missing_features_count": 27,
+  "top_missing_features": [
+    [
+      "PoolQC",
+      {
+        "missing_count": 2917,
+        "missing_pct": 99.56
+      }
+    ],
+    [
+      "MiscFeature",
+      {
+        "missing_count": 2824,
+        "missing_pct": 96.38
+      }
+    ],
+    [
+      "Alley",
+      {
+        "missing_count": 2732,
+        "missing_pct": 93.24
+      }
+    ],
+    [
+      "Fence",
+      {
+        "missing_count": 2358,
+        "missing_pct": 80.48
+      }
+    ],
+    [
+      "MasVnrType",
+      {
+        "missing_count": 1775,
+        "missing_pct": 60.58
+      }
+    ],
+    [
+      "FireplaceQu",
+      {
+        "missing_count": 1422,
+        "missing_pct": 48.53
+      }
+    ],
+    [
+      "LotFrontage",
+      {
+        "missing_count": 490,
+        "missing_pct": 16.72
+      }
+    ],
+    [
+      "GarageYrBlt",
+      {
+        "missing_count": 159,
+        "missing_pct": 5.43
+      }
+    ],
+    [
+      "GarageFinish",
+      {
+        "missing_count": 159,
+        "missing_pct": 5.43
+      }
+    ],
+    [
+      "GarageQual",
+      {
+        "missing_count": 159,
+        "missing_pct": 5.43
+      }
+    ]
+  ],
+  "target_summary": {
+    "count": 2930,
+    "mean": 180796.06,
+    "median": 160000.0,
+    "std": 79886.69,
+    "min": 12789.0,
+    "q25": 129500.0,
+    "q75": 213500.0,
+    "max": 755000.0,
+    "skewness": 1.7435,
+    "kurtosis": 5.1189,
+    "log_skewness": -0.0148,
+    "iqr_outlier_count": 137,
+    "iqr_lower_bound": 3500.0,
+    "iqr_upper_bound": 339500.0
+  },
+  "de_cock_large_homes_count": 5
+}

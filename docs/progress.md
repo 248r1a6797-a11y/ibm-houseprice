@@ -1,0 +1,21 @@
+# HouseWise AI — Project Execution Progress Tracker
+
+| Phase | Description | Status | Files Changed / Created | Tests / Verification | Results / Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Phase 0** | Discovery & Environment Inspection | COMPLETE | `docs/data_sources.md`, `docs/data_dictionary.md`, `docs/PRD.md`, `docs/architecture.md`, `config/config.yaml`, `config/feature_config.yaml`, `src/config.py` | Python 3.13 inspection, pip installation | All core ML and UI packages (sklearn, xgboost, lightgbm, shap, streamlit, plotly) verified and imported. |
+| **Phase 1** | Project Setup & Configuration | COMPLETE | `requirements.txt`, `pyproject.toml`, `.env.example`, `.gitignore`, `scripts/fetch_data.py` | Directory tree verification | Authoritative Ames dataset (2,930 x 82) successfully fetched and verified. |
+| **Phase 2** | Data Ingestion & Quality Audit | COMPLETE | `src/data/loader.py`, `src/data/validator.py`, `src/data/cleaner.py`, `scripts/profile_data.py` | Data profile script | Ingestion, validation, structural missingness, and clerical error audit (GarageYrBlt 2207 -> 2007) completed. |
+| **Phase 3** | Exploratory Data Analysis & Analytics Engine | COMPLETE | `src/analytics/descriptive.py`, `src/analytics/segmentation.py`, `src/analytics/insights.py` | Descriptive metrics & segmentations | Verified skewness reduction (1.74 -> -0.01) and neighborhood valuation spread (3.5x). |
+| **Phase 4** | Feature Engineering & Preprocessing | COMPLETE | `src/features/engineering.py`, `src/features/preprocessing.py` | Feature formula tests | Anti-leakage features (TotalSF, TotalBath, HouseAgeAtSale = YrSold - YearBuilt) and ColumnTransformer created. |
+| **Phase 5** | Splitter & Validation Strategy | COMPLETE | `src/data/splitter.py` | 80/20 train/test split | 2,344 training properties, 586 holdout test properties cleanly partitioned to parquet. |
+| **Phase 6** | Baselines & Candidate Model Suite | COMPLETE | `src/models/*.py` (18 models across 6 families) | 5-Fold cross-validation | Benchmarked Baselines, OLS, Ridge, Lasso, Trees, Boosters, Ensembles, MLP. |
+| **Phase 7** | Cross-Validation Benchmarking | COMPLETE | `src/evaluation/cross_validation.py`, `reports/tables/model_comparison.csv` | 5-Fold CV on training pool | Logged out-of-fold RMSE, MAE, R², overfit gaps, and CV runtimes. |
+| **Phase 8** | Hyperparameter Tuning & Selection Gate | COMPLETE | `src/models/tuning.py`, `scripts/train.py`, `reports/model_selection.md` | RandomizedSearchCV | Champion selected: XGBoost Regressor (Test RMSE: $22,973, Test MAE: $13,835, R²: 0.9342). |
+| **Phase 9** | Model Evaluation & Residual Diagnostics | COMPLETE | `src/evaluation/error_analysis.py`, `scripts/evaluate.py` | Holdout evaluation script | Calibrated 80% prediction interval [-$17,310, +$20,237], worst under/overpredictions analyzed. |
+| **Phase 10** | Explainability (SHAP & Permutation) | COMPLETE | `src/explainability/*.py`, `reports/tables/shap_feature_importance.csv` | TreeExplainer | Top global drivers: OverallQual, GrLivArea, TotalSF, TotalBath, HouseAgeAtSale. |
+| **Phase 11** | Inference Engine & Prediction Service | COMPLETE | `src/inference/predictor.py`, `scripts/predict.py` | Single property & batch prediction CLI | Real-time valuation (<30ms latency) with itemized waterfall drivers and baseline profile comparisons. |
+| **Phase 12** | Multi-Page Streamlit Dashboard | COMPLETE | `app/app.py`, `app/pages/*.py`, `app/styles/theme.css` | Localhost browser verification | 12 interactive corporate command pages live on http://localhost:8501. |
+| **Phase 13** | Automated Testing Suite | COMPLETE | `tests/test_*.py` | `pytest tests/ -v` | 14/14 unit and integration tests passing in 2.98s. |
+| **Phase 14** | Project Health Check & Benchmarking | COMPLETE | `scripts/project_health_check.py`, `reports/benchmark.md` | Health check CLI | 16/16 critical artifacts verified, status: PASS. |
+| **Phase 15** | Final Reports & Presentation Artifacts | COMPLETE | `reports/*.md`, `docs/presentation_script.md`, `README.md` | Markdown generation | 22-section final report, Model Card, Model Selection report, 15-slide presentation script. |
+| **Phase 16** | Localhost Launch & Verification | COMPLETE | Background Streamlit server daemon | HTTP status 200 check | Application actively serving on http://localhost:8501. |

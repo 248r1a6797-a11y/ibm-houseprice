@@ -1,0 +1,12 @@
+{
+  "metrics": {
+    "Holdout_Test_MAE": 13834.55,
+    "Holdout_Test_RMSE": 22972.84,
+    "Holdout_Test_R2": 0.9342,
+    "Holdout_Test_RMSLE": 0.1059,
+    "Holdout_Test_MAPE_pct": 7.31,
+    "Holdout_Test_MedianAE": 9070.75
+  },
+  "test_sample_size": 586,
+  "worst_mae_neighborhood": "NAmes"
+}

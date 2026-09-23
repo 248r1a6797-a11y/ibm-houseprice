@@ -1,0 +1,13 @@
+calendar_month,month_name,total_transactions,mean_sale_price,mean_price_per_sqft,aggregate_volume_millions
+1,January,123,194210.0,124.97,23.89
+2,February,133,178364.0,120.55,23.72
+3,March,232,176130.0,119.02,40.86
+4,April,279,167712.0,120.27,46.79
+5,May,395,173700.0,120.41,68.61
+6,June,505,181543.0,121.06,91.68
+7,July,449,184367.0,122.04,82.78
+8,August,233,186222.0,122.7,43.39
+9,September,161,191552.0,124.53,30.84
+10,October,173,180057.0,121.63,31.15
+11,November,143,187651.0,119.33,26.83
+12,December,104,184454.0,121.2,19.18

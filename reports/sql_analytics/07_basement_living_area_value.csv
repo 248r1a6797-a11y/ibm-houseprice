@@ -1,0 +1,5 @@
+basement_category,property_count,avg_bsmt_sqft,avg_above_ground_sqft,avg_sale_price,avg_price_per_above_ground_sqft
+Large Finished Basement (>=1000 SF),423,1602.0,1817.0,271820.0,150.09
+Unfinished Basement,851,971.0,1539.0,167430.0,108.84
+Moderate Finished Basement (<1000 SF),1576,1000.0,1402.0,167318.0,122.18
+No Basement,80,0.0,1324.0,107203.0,84.5
