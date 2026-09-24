@@ -26,7 +26,7 @@ def load_production_model() -> Tuple[Any, Dict[str, Any]]:
     if not PRODUCTION_MODEL_PATH.exists():
         raise FileNotFoundError(
             f"Production model not found at {PRODUCTION_MODEL_PATH}. "
-            "Please execute 'python scripts/train.py' first."
+            "Please train candidate models in 7. Model Laboratory first."
         )
 
     logger.info(f"Loading production model from: {PRODUCTION_MODEL_PATH}")
@@ -43,101 +43,167 @@ def load_production_model() -> Tuple[Any, Dict[str, Any]]:
 
 def predict_single_property(
     input_data: Dict[str, Any],
-    dataset_medians: Optional[Dict[str, float]] = None
+    dataset_medians: Optional[Dict[str, float]] = None,
+    model: Optional[Any] = None,
+    metadata: Optional[Dict[str, Any]] = None,
+    expected_features: Optional[List[str]] = None,
+    currency_symbol: str = CURRENCY_SYMBOL
 ) -> Dict[str, Any]:
     """
     Generate an estimated market valuation, uncertainty interval, SHAP drivers,
     and profile comparison for a single residential property.
+    Supports active session models and arbitrary feature sets.
     """
-    # 1. Validate payload
-    is_valid, validation_errors = validate_input_features(input_data)
+    # 1. Resolve model and metadata
+    if model is None:
+        model, default_meta = load_production_model()
+        meta = metadata or default_meta
+    else:
+        meta = metadata or {}
+
+    # 2. Validate payload
+    is_valid, validation_errors = validate_input_features(input_data, expected_features=expected_features)
     if not is_valid:
         raise ValueError(f"Input validation failed: {'; '.join(validation_errors)}")
 
-    # 2. Load model
-    model, metadata = load_production_model()
-
-    # 3. Create single-row DataFrame and align with model feature schema
+    # 3. Create single-row DataFrame
     single_df = pd.DataFrame([input_data])
     
-    # Populate any missing feature columns with NaN so preprocessor imputers handle them
-    expected_cols = metadata.get("numerical_features", []) + metadata.get("categorical_features", [])
-    for col in expected_cols:
-        if col not in single_df.columns:
-            single_df[col] = np.nan
+    # 4. Resolve expected feature schema from model or metadata
+    model_features = None
+    if hasattr(model, "feature_names_in_"):
+        model_features = list(model.feature_names_in_)
+    elif hasattr(model, "named_steps") and hasattr(model.named_steps.get("preprocessor"), "feature_names_in_"):
+        model_features = list(model.named_steps["preprocessor"].feature_names_in_)
+    elif hasattr(model, "regressor_") and hasattr(model.regressor_, "named_steps") and hasattr(model.regressor_.named_steps.get("preprocessor"), "feature_names_in_"):
+        model_features = list(model.regressor_.named_steps["preprocessor"].feature_names_in_)
+    elif expected_features:
+        model_features = expected_features
+    else:
+        model_features = meta.get("numerical_features", []) + meta.get("categorical_features", [])
 
-    # 4. Feature engineering
-    engineered_df = engineer_housing_features(single_df, is_training=False)
+    # If the model was trained on Ames features, apply engineer_housing_features
+    is_ames = any(f in ["GrLivArea", "OverallQual", "TotalBsmtSF"] for f in (model_features or []))
+    if is_ames and not any(f in single_df.columns for f in ["TotalSF", "HouseAgeAtSale"]):
+        single_df = engineer_housing_features(single_df, is_training=False)
+
+    # Align columns: fill any missing columns with NaN so preprocessor imputers handle them
+    if model_features:
+        for col in model_features:
+            if col not in single_df.columns:
+                single_df[col] = np.nan
+        # Ensure column ordering matches model expectations
+        eval_df = single_df[[c for c in model_features if c in single_df.columns]].copy()
+    else:
+        eval_df = single_df.copy()
 
     # 5. Predict
-    raw_pred = model.predict(engineered_df)
-    predicted_price = float(np.maximum(1000.0, raw_pred[0]))
+    raw_pred = model.predict(eval_df)
+    predicted_price = float(np.maximum(100.0, raw_pred[0]))
 
     # 6. Prediction interval calculation
-    intervals = metadata.get("prediction_intervals", {})
-    lower_offset = intervals.get("lower_residual_offset", -25000.0)
-    upper_offset = intervals.get("upper_residual_offset", 25000.0)
+    # Check if calibrated intervals are in metadata
+    intervals = meta.get("prediction_intervals", {})
+    lower_offset = intervals.get("lower_residual_offset")
+    upper_offset = intervals.get("upper_residual_offset")
 
-    # Predicted price with calibrated bounds: Actual = Pred + Residual
-    lower_bound = max(10000.0, predicted_price + lower_offset)
-    upper_bound = predicted_price + upper_offset
+    if lower_offset is None or upper_offset is None:
+        # Dynamic empirical standard error estimation: ~10% or from holdout test RMSE
+        test_rmse = meta.get("metrics", {}).get("holdout_test", {}).get("RMSE", predicted_price * 0.10)
+        lower_bound = max(100.0, predicted_price - (1.645 * test_rmse))
+        upper_bound = predicted_price + (1.645 * test_rmse)
+    else:
+        lower_bound = max(100.0, predicted_price + lower_offset)
+        upper_bound = predicted_price + upper_offset
 
     # 7. Explainability
-    explanation = explain_single_prediction(model, engineered_df, top_k=4)
+    try:
+        explanation = explain_single_prediction(model, eval_df, top_k=4)
+    except Exception as e:
+        logger.warning(f"Single prediction explanation failed: {e}")
+        explanation = {"positive_drivers": [], "negative_drivers": []}
 
     # 8. Comparison against dataset medians
     comparisons = []
     if dataset_medians:
-        liv_area = float(engineered_df["GrLivArea"].iloc[0]) if "GrLivArea" in engineered_df.columns else 0.0
-        med_liv = dataset_medians.get("median_living_area", 1442.0)
-        if liv_area > med_liv:
-            diff_pct = ((liv_area - med_liv) / med_liv) * 100
-            comparisons.append(f"Living Area ({liv_area:,.0f} sq ft) is {diff_pct:.0f}% above the Ames market median ({med_liv:,.0f} sq ft).")
-        else:
-            diff_pct = ((med_liv - liv_area) / med_liv) * 100
-            comparisons.append(f"Living Area ({liv_area:,.0f} sq ft) is {diff_pct:.0f}% below the Ames market median ({med_liv:,.0f} sq ft).")
-
-        qual = int(engineered_df["OverallQual"].iloc[0]) if "OverallQual" in engineered_df.columns else 6
-        comparisons.append(f"Construction Quality rating is {qual}/10 (Market median: 6/10).")
+        for feat_name, med_val in dataset_medians.items():
+            if feat_name in eval_df.columns and pd.api.types.is_numeric_dtype(eval_df[feat_name]):
+                val = float(eval_df[feat_name].iloc[0])
+                if med_val > 0:
+                    pct = ((val - med_val) / med_val) * 100.0
+                    sign = "above" if pct >= 0 else "below"
+                    comparisons.append(f"**{feat_name}** ({val:,.1f}) is {abs(pct):.0f}% {sign} the dataset median ({med_val:,.1f}).")
 
     return {
         "predicted_price": round(predicted_price, 2),
-        "formatted_price": f"{CURRENCY_SYMBOL}{predicted_price:,.0f}",
+        "formatted_price": f"{currency_symbol}{predicted_price:,.0f}",
         "lower_bound": round(lower_bound, 2),
         "upper_bound": round(upper_bound, 2),
-        "formatted_interval": f"{CURRENCY_SYMBOL}{lower_bound:,.0f} – {CURRENCY_SYMBOL}{upper_bound:,.0f}",
-        "model_name": metadata.get("model_name", "Production Regressor"),
-        "model_version": metadata.get("model_version", "1.0.0"),
-        "test_mae": metadata.get("metrics", {}).get("holdout_test", {}).get("MAE", 15000.0),
+        "formatted_interval": f"{currency_symbol}{lower_bound:,.0f} – {currency_symbol}{upper_bound:,.0f}",
+        "model_name": meta.get("model_name", "Champion Model"),
+        "model_version": meta.get("model_version", "1.0.0"),
+        "test_mae": meta.get("metrics", {}).get("holdout_test", {}).get("MAE", 0.0),
         "positive_drivers": explanation.get("positive_drivers", []),
         "negative_drivers": explanation.get("negative_drivers", []),
-        "comparisons": comparisons
+        "comparisons": comparisons[:4]
     }
 
-def predict_batch_dataframe(df_input: pd.DataFrame) -> pd.DataFrame:
+def predict_batch_dataframe(
+    df_input: pd.DataFrame,
+    model: Optional[Any] = None,
+    metadata: Optional[Dict[str, Any]] = None,
+    currency_symbol: str = CURRENCY_SYMBOL
+) -> pd.DataFrame:
     """
     Score a batch DataFrame, appending predicted_price, lower_bound, upper_bound.
     """
-    model, metadata = load_production_model()
+    if model is None:
+        model, default_meta = load_production_model()
+        meta = metadata or default_meta
+    else:
+        meta = metadata or {}
 
     df_scored = df_input.copy()
-    expected_cols = metadata.get("numerical_features", []) + metadata.get("categorical_features", [])
-    for col in expected_cols:
-        if col not in df_scored.columns:
-            df_scored[col] = np.nan
 
-    engineered_df = engineer_housing_features(df_scored, is_training=False)
+    # Determine expected model features
+    model_features = None
+    if hasattr(model, "feature_names_in_"):
+        model_features = list(model.feature_names_in_)
+    elif hasattr(model, "named_steps") and hasattr(model.named_steps.get("preprocessor"), "feature_names_in_"):
+        model_features = list(model.named_steps["preprocessor"].feature_names_in_)
+    elif hasattr(model, "regressor_") and hasattr(model.regressor_, "named_steps") and hasattr(model.regressor_.named_steps.get("preprocessor"), "feature_names_in_"):
+        model_features = list(model.regressor_.named_steps["preprocessor"].feature_names_in_)
 
-    predictions = model.predict(engineered_df)
-    predictions = np.maximum(1000.0, predictions)
+    is_ames = any(f in ["GrLivArea", "OverallQual", "TotalBsmtSF"] for f in (model_features or []))
+    if is_ames and not any(f in df_scored.columns for f in ["TotalSF", "HouseAgeAtSale"]):
+        eval_df = engineer_housing_features(df_scored, is_training=False)
+    else:
+        eval_df = df_scored.copy()
 
-    intervals = metadata.get("prediction_intervals", {})
-    lower_offset = intervals.get("lower_residual_offset", -25000.0)
-    upper_offset = intervals.get("upper_residual_offset", 25000.0)
+    if model_features:
+        for col in model_features:
+            if col not in eval_df.columns:
+                eval_df[col] = np.nan
+        eval_df = eval_df[[c for c in model_features if c in eval_df.columns]]
+
+    predictions = model.predict(eval_df)
+    predictions = np.maximum(100.0, predictions)
+
+    intervals = meta.get("prediction_intervals", {})
+    lower_offset = intervals.get("lower_residual_offset")
+    upper_offset = intervals.get("upper_residual_offset")
+
+    if lower_offset is None or upper_offset is None:
+        test_rmse = meta.get("metrics", {}).get("holdout_test", {}).get("RMSE", 20000.0)
+        lower_bounds = np.maximum(100.0, predictions - (1.645 * test_rmse))
+        upper_bounds = predictions + (1.645 * test_rmse)
+    else:
+        lower_bounds = np.maximum(100.0, predictions + lower_offset)
+        upper_bounds = predictions + upper_offset
 
     df_scored["predicted_price"] = np.round(predictions, 2)
-    df_scored["lower_bound"] = np.round(np.maximum(10000.0, predictions + lower_offset), 2)
-    df_scored["upper_bound"] = np.round(predictions + upper_offset, 2)
-    df_scored["model_version"] = metadata.get("model_version", "1.0.0")
+    df_scored["lower_bound"] = np.round(lower_bounds, 2)
+    df_scored["upper_bound"] = np.round(upper_bounds, 2)
+    df_scored["model_version"] = meta.get("model_version", "1.0.0")
 
     return df_scored

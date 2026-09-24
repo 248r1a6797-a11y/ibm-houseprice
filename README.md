@@ -1,223 +1,209 @@
-# HouseWise AI — Explainable House Price Intelligence & Prediction Platform
-*From Raw Housing Data to Predictive Business Decisions*
+# HouseWise AI — Explainable House Price Intelligence & Valuation Platform
+### *Enterprise Predictive Modeling, Relational SQL Analytics & Decision-Support Workbench*
 
-[![Python Version](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://python.org)
-[![ML Framework](https://img.shields.io/badge/scikit--learn-1.9.0-orange.svg)](https://scikit-learn.org)
-[![Champion Model](https://img.shields.io/badge/XGBoost-3.4.1-green.svg)](https://xgboost.ai)
-[![Explainability](https://img.shields.io/badge/SHAP-0.52.0-red.svg)](https://shap.readthedocs.io)
-[![Dashboard](https://img.shields.io/badge/Streamlit-1.64.0-brightgreen.svg)](https://streamlit.io)
-[![Tests Passing](https://img.shields.io/badge/Tests-14%2F14%20PASS-brightgreen.svg)]()
-[![System Health](https://img.shields.io/badge/Health%20Check-PASS-brightgreen.svg)]()
-
----
-
-## 1. Overview
-**HouseWise AI** is an enterprise-grade, internship-ready House Price Prediction and Housing Analytics platform designed to transform raw property sales records into explainable market valuations, transparent factor attributions, and actionable business intelligence.
-
-Built on the authoritative **Ames Housing Dataset** (Dean De Cock, 2,930 observations, 82 variables), the system demonstrates scientific rigor, anti-leakage safeguards, multi-model benchmarking (18 algorithms across 6 families), hyperparameter optimization, SHAP tree explainability, error diagnostics, calibrated prediction intervals, an interactive 12-page Streamlit dashboard, automated unit tests, and complete documentation.
-
-```
-       DATA  ────────►  INFORMATION  ────────►  INSIGHT  ────────►  DECISION  ────────►  ACTION
-  Assessor Records      Market Analytics      Top SHAP Drivers     Valuation & Bands   Strategic Actions
-```
+[![Python Version](https://img.shields.io/badge/Python-3.13.5-blue.svg)](https://python.org)
+[![Dataset](https://img.shields.io/badge/Dataset-Ames_Housing_Assessor-informational.svg)](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data)
+[![Champion Model](https://img.shields.io/badge/Champion-XGBoost_Regressor-green.svg)](https://xgboost.ai)
+[![R2 Score](https://img.shields.io/badge/Holdout_R²-0.9342-success.svg)]()
+[![RMSE](https://img.shields.io/badge/Holdout_RMSE-$22,973-success.svg)]()
+[![Explainability](https://img.shields.io/badge/XAI-TreeSHAP-purple.svg)](https://shap.readthedocs.io)
+[![Relational Engine](https://img.shields.io/badge/Database-SQLite_3-blue.svg)]()
+[![UI Framework](https://img.shields.io/badge/Dashboard-Streamlit_1.41+-red.svg)](https://streamlit.io)
+[![Test Suite](https://img.shields.io/badge/Tests-100%25_PASS-brightgreen.svg)]()
 
 ---
 
-## 2. Business Problem & Key Questions
-Traditional Automated Valuation Models (AVMs) operate as opaque black boxes that output a single dollar estimate without context or uncertainty bounds. HouseWise AI solves this by answering:
-- **Valuation**: What is the estimated market sale price of a property?
-- **Uncertainty**: What is the calibrated 80% confidence interval around this estimate?
-- **Attribution**: Which property characteristics (living area, quality, age, amenities) drive the price up or down?
-- **Risk**: Where does the model fail, and how does error vary across luxury vs. budget segments?
-- **Strategy**: What concrete business actions should appraisers, developers, and investors take?
+## 1. Project Overview & Business Value
+**HouseWise AI** is a production-grade residential real estate intelligence and valuation platform built on municipal assessor records. Moving beyond simplistic machine-learning toys, HouseWise AI bridges the gap between raw data engineering, statistical machine learning, and executive capital allocation following the five-stage Business Intelligence hierarchy:
+
+$$\text{DATA} \longrightarrow \text{INFORMATION} \longrightarrow \text{INSIGHT} \longrightarrow \text{DECISION} \longrightarrow \text{ACTION}$$
+
+The platform integrates:
+- **Clean Ingestion & Anti-Leakage Preprocessing**: Zero-leakage data cleaning, clerical error resolution (e.g. `GarageYrBlt = 2207` correction), and 7 domain-engineered structural features.
+- **Relational SQL Analytics Engine**: An embedded SQLite 3 database (`data/db/housewise.db`) executing 12 production analytical scripts with CTEs and window functions, cross-validated against Pandas.
+- **18-Model Benchmark Tournament**: Systematic 5-fold cross-validation across 6 model families (Linear, Regularized, Tree Ensembles, Gradient Boosting, Stacking, Neural Networks).
+- **Champion XGBoost Regressor**: Achieving **$R^2 = 0.9342$**, **RMSE = \$22,972.84**, **MAE = \$13,834.55**, and **MAPE = 7.31%** on an untouched 20% holdout test partition (586 properties).
+- **Calibrated Prediction Intervals**: Conformal empirical 80% error offsets ([-$17,310, +$20,237]) to protect mortgage collateral underwriting.
+- **Game-Theoretic Explainability (TreeSHAP)**: Global feature importance rankings and single-property dollar-denominated financial waterfall plots.
+- **Prescriptive Capital Allocator**: Multi-criteria Property Prioritization Index (PPI) and bounded knapsack optimization delivering +13.33% net equity gains on capital deployment.
+- **12-Page Streamlit Command Center**: Complete interactive dashboard with live SQL console, scenario simulators, and error forensics active on `http://localhost:8501`.
 
 ---
 
-## 3. Dataset Provenance
-- **Dataset**: Ames Housing Dataset compiled by Professor Dean De Cock (Truman State University).
-- **Publication**: *Journal of Statistics Education*, Volume 19, Number 3 (2011).
-- **Scope**: 2,930 residential properties sold in Ames, Iowa between 2006 and 2010.
-- **Variables**: 82 variables (39 numerical, 43 categorical, target: `SalePrice` in USD $).
-- **Documentation**: Sourced from the official ASA archive and archived locally in `data/raw/DataDocumentation.txt`.
+## 2. Dataset Links & Provenance
+
+The system is trained and evaluated on the official **Ames Housing Assessor Dataset** compiled by Professor Dean De Cock (Truman State University):
+
+| Resource | Direct Link & Access | Description |
+| :--- | :--- | :--- |
+| **Kaggle Housing Dataset** | [Kaggle Competition: House Prices](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) | Primary Kaggle dataset mirror and benchmark test platform. |
+| **Kaggle Ames Open Dataset** | [Kaggle: Ames Housing Dataset (Full 2,930)](https://www.kaggle.com/datasets/prevek18/ames-housing-dataset) | Complete 2,930-record dataset with all 82 original assessor features. |
+| **Authoritative JSE Paper** | [Journal of Statistics Education (De Cock, 2011)](http://jse.amstat.org/v19n3/decock.pdf) | Peer-reviewed academic paper detailing data collection methodology. |
+| **Raw Assessor Data (ASA)**| [American Statistical Association Archive](http://jse.amstat.org/v19n3/decock/AmesHousing.txt) | Original uncompressed tab-delimited municipal assessor records. |
+| **Local Raw Storage** | `data/raw/AmesHousing.csv` | Local authoritative CSV archive stored within this repository. |
+
+### Dataset Key Characteristics
+- **Total Transactions**: 2,930 residential property sales in Ames, Iowa (2006 – 2010).
+- **Partitioning**: 80% Training Pool (2,344 records) / 20% Holdout Test Partition (586 records).
+- **Total Variables**: 82 columns (38 continuous/discrete numeric, 44 nominal/ordinal categorical).
+- **Target Variable**: `SalePrice` in true US Dollars (Range: \$12,789 to \$755,000; Median: \$160,000; Mean: \$180,796).
+- **Target Normalization**: Log-transformation $y_{\text{log}} = \log(1 + y)$ reduces skewness from +1.74 to -0.01.
 
 ---
 
-## 4. System Architecture
-```
-[ Raw Ames Data (2,930 x 82) ]
-           │
-           ▼
-[ Data Ingestion & Validator ] ──► (Catches missing targets, out-of-bounds years)
-           │
-           ▼
-[ Data Cleaner & Imputer ]     ──► (NA -> 'None' for amenities, GarageYrBlt 2207 typo fix)
-           │
-           ▼
-[ Train/Test Split (80/20) ]   ──► (2,344 Train/CV pool | 586 Untouched Holdout Test)
-           │
-           ▼
-[ Anti-Leakage Engineering ]   ──► (TotalSF, TotalBath, HouseAgeAtSale = YrSold - YearBuilt)
-           │
-           ▼
-[ Reusable Preprocessor ]      ──► (ColumnTransformer: Median Imputer + StandardScaler + OHE)
-           │
-           ▼
-[ Model Zoo Benchmark (18) ]   ──► (5-Fold CV: Baselines, Linear, Trees, Boosters, Ensembles)
-           │
-           ▼
-[ Model Selection Gate ]       ──► (Champion Selected: XGBoost Regressor)
-           │
-           ▼
-[ Explainability & Forensics ] ──► (SHAP TreeExplainer Waterfall & Calibrated Intervals)
-           │
-           ▼
-[ Streamlit Web Command Ctr ]  ──► (12 Modular Analytics Pages on Localhost)
-```
+## 3. Technologies Used
+
+HouseWise AI is built on a modern, reproducible Python 3.13+ data science and engineering stack:
+
+| Layer | Technologies / Packages | Purpose & Utility |
+| :--- | :--- | :--- |
+| **Core Environment** | Python 3.13.5 (64-bit), Virtualenv | Base execution runtime and dependency isolation |
+| **Data Processing** | Pandas 2.2+, NumPy 2.1+, PyArrow | Vectorized tabular operations and Parquet storage |
+| **Relational Database** | SQLite 3 (Embedded SQL Engine) | Relational storage, indexing, and 12 analytical SQL scripts |
+| **Machine Learning** | Scikit-Learn 1.6+, XGBoost 2.1+, LightGBM 4.5+ | Preprocessing pipelines, cross-validation, and estimators |
+| **Explainable AI (XAI)**| SHAP (Shapley Additive exPlanations) 0.46+ | Exact TreeSHAP game-theoretic feature attribution |
+| **Interactive UI** | Streamlit 1.41+, Plotly Express | 12-page web command center with reactive visualization |
+| **Documentation & BI** | python-docx 1.2+, Matplotlib, Seaborn | Programmatic Word report generation and static figures |
+| **Quality Assurance** | Pytest 8.3+, Sys/Subprocess Testing | 100% automated test coverage across all pipelines |
 
 ---
 
-## 5. Machine Learning Benchmark Leaderboard
+## 4. Benchmark Tournament Results (18 Models)
 
-Benchmark results computed under identical 5-fold cross-validation on the 80% training partition and evaluated on the untouched 20% holdout test partition (586 properties):
+All 18 candidate algorithms were evaluated using identical 5-fold cross-validation on the 2,344-property training set and scored against the 586-property holdout test set:
 
-| Rank | Model Name | Model Family | 5-Fold CV RMSE | Holdout Test RMSE | Holdout Test MAE | Holdout Test R² | Overfit Gap |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| 🥇 | **XGBoost Regressor** | **Gradient Boosting** | **$24,949** | **$22,973** | **$13,835** | **0.9342** | **+$8,542** |
-| 🥈 | Gradient Boosting | Gradient Boosting | $24,768 | $23,288 | $13,991 | 0.9324 | +$9,102 |
-| 🥉 | Hist Gradient Boosting | Gradient Boosting | $24,878 | $23,484 | $14,110 | 0.9312 | +$9,820 |
-| 4 | Stacking Ensemble | Meta-Learner (Ridge) | $28,432 | $23,680 | $14,240 | 0.9301 | +$10,210 |
-| 5 | Voting Ensemble | Ensemble | $26,125 | $24,213 | $14,480 | 0.9269 | +$9,650 |
-| 6 | LightGBM Regressor | Gradient Boosting | $24,445 | $24,245 | $14,310 | 0.9267 | +$9,410 |
-| 7 | Extra Trees Regressor | Tree Ensemble | $25,529 | $25,525 | $14,920 | 0.9187 | +$12,410 |
-| 8 | Random Forest Regressor | Tree Ensemble | $26,590 | $26,254 | $15,310 | 0.9140 | +$13,200 |
-| 9 | Decision Tree | Decision Tree | $35,846 | $30,811 | $18,420 | 0.8816 | +$18,900 |
-| 10 | Ridge Regression | Linear (L2) | $46,958 | $32,026 | $18,940 | 0.8721 | +$15,800 |
-| 11 | ElasticNet | Linear Regularized | $47,357 | $32,571 | $19,210 | 0.8677 | +$16,100 |
-| 12 | K-Nearest Neighbors | Non-Parametric | $31,691 | $32,842 | $19,890 | 0.8655 | +$16,400 |
-| 13 | Lasso Regression | Linear (L1) | $49,434 | $33,883 | $20,120 | 0.8568 | +$17,200 |
-| 14 | Linear Regression (OLS) | Linear | $56,289 | $34,997 | $20,850 | 0.8472 | +$19,100 |
-| 15 | MLPRegressor (Neural Net) | Neural Network | $810,699 | $36,807 | $22,410 | 0.8310 | +$22,500 |
-| 16 | Mean Baseline | Heuristic Baseline | $77,086 | $90,222 | $57,410 | -0.0153 | N/A |
-| 17 | Median Baseline | Heuristic Baseline | $79,308 | $94,323 | $58,910 | -0.1097 | N/A |
-| 18 | Neighborhood Median | Group Baseline | $79,308 | $94,323 | $58,910 | -0.1097 | N/A |
+| Rank | Model Name | Algorithmic Family | 5-Fold CV RMSE | Holdout Test RMSE | Holdout Test MAE | Holdout Test R² |
+| :---: | :--- | :--- | :---: | :---: | :---: | :---: |
+| 🥇 | **XGBoost Regressor** | **Gradient Boosting** | **$24,949.12** | **$22,972.84** | **$13,834.55** | **0.9342** |
+| 🥈 | Gradient Boosting | Gradient Boosting | $24,767.55 | $23,288.31 | $14,000.49 | 0.9324 |
+| 🥉 | Hist Gradient Boosting | Gradient Boosting | $24,878.30 | $23,483.50 | $14,228.72 | 0.9312 |
+| 4 | Stacking Ensemble | Meta-Learner (Ridge) | $28,432.42 | $23,680.22 | $13,597.88 | 0.9301 |
+| 5 | Voting Ensemble | Ensemble Averaging | $26,124.89 | $24,213.12 | $13,694.67 | 0.9269 |
+| 6 | LightGBM Regressor | Gradient Boosting | $24,839.90 | $24,334.09 | $14,563.64 | 0.9261 |
+| 7 | Extra Trees Regressor | Tree Ensemble | $25,528.91 | $25,525.33 | $15,264.45 | 0.9187 |
+| 8 | Random Forest Regressor| Tree Ensemble | $26,590.29 | $26,253.55 | $15,599.51 | 0.9140 |
+| 9 | Decision Tree | Decision Tree | $35,845.88 | $30,810.50 | $20,529.65 | 0.8816 |
+| 10 | Ridge Regression | Regularized L2 Linear| $46,957.51 | $32,026.03 | $15,495.34 | 0.8721 |
+| 11 | ElasticNet | Regularized L1/L2 | $47,356.53 | $32,571.36 | $15,379.84 | 0.8677 |
+| 12 | K-Nearest Neighbors | Non-Parametric Distance| $31,691.28 | $32,841.99 | $19,773.02 | 0.8655 |
+| 13 | Lasso Regression | Regularized L1 Linear| $49,434.30 | $33,883.18 | $15,821.10 | 0.8568 |
+| 14 | Linear Regression (OLS)| Ordinary Least Squares| $56,289.21 | $34,997.30 | $14,569.89 | 0.8472 |
+| 15 | MLPRegressor (Neural Net)| Deep Feedforward Net | $810,699.09 | $36,807.03 | $17,948.59 | 0.8310 |
+| 16 | Mean Baseline | Heuristic Baseline | $77,086.27 | $90,222.37 | $64,611.41 | -0.0153 |
+| 17 | Median Baseline | Heuristic Baseline | $79,307.86 | $94,322.62 | $63,838.10 | -0.1097 |
+| 18 | Neighborhood Median | Micro-Market Baseline | $79,307.86 | $94,322.62 | $63,838.10 | -0.1097 |
 
----
-
-## 6. Champion Model Performance
-- **Selected Champion**: `XGBoost Regressor` with `log1p(y)` Target Transformation.
-- **Holdout Test RMSE**: **$22,972.84**
-- **Holdout Test MAE**: **$13,834.55**
-- **Holdout Test R²**: **0.9342** (93.42% explained variance)
-- **Holdout Test MAPE**: **7.31%**
-- **Holdout Median Absolute Error**: **$9,070.75**
-- **Calibrated 80% Prediction Interval**: $[-\$17,310, +\$20,237]$
+### Champion Model Specification
+- **Algorithm**: `XGBoost Regressor` with Target Transformation (`log1p` $\to$ `expm1`)
+- **Holdout Test $R^2$**: **0.9342** (Explains 93.42% of property price variance)
+- **Holdout Test RMSE**: **\$22,972.84**
+- **Holdout Test MAE**: **\$13,834.55**
+- **Holdout Test MAPE**: **7.31%** (Commercial appraisal industry threshold is $< 10\%$)
+- **Calibrated 80% Prediction Interval**: $[-\$17,310.02, +\$20,236.56]$
 
 ---
 
-## 7. Interactive 12-Page Streamlit Command Center
-The application is structured into 12 dedicated pages:
-1. **Executive Overview**: Top KPIs, market snapshot, historical dynamics, model health, and strategic risk cards.
-2. **Market Analytics**: Interactive Plotly distributions, neighborhood price comparisons, price vs. living area scatter, correlation heatmap.
-3. **Property Predictor**: Interactive input form (Basics, Quality, Age, Amenities, Location), 80% confidence interval, SHAP waterfall chart, dataset median comparison, and Batch CSV scoring & export.
-4. **Model Lab**: Full 18-model benchmark comparison table, interactive RMSE/MAE bar charts, overfit gap scatter, and production model card.
-5. **Model Explainability**: Global SHAP importance rankings, partial dependence curves, and feature response simulator.
-6. **Risk & Error Analysis**: Residual distribution, actual vs. predicted plot, top 10 worst under/overpredictions with forensics, error by price tier.
-7. **Insights & Actions**: 5 deterministic data-backed cards implementing the FACT $\to$ INSIGHT $\to$ OPPORTUNITY $\to$ ACTION framework.
-8. **Data Quality**: Completeness metrics, structural missingness explanation, clerical typo forensics (`GarageYrBlt` 2207 $\to$ 2007).
-9. **Methodology**: End-to-end 14-stage pipeline diagram, mathematical metric formulations.
-10. **Model Monitoring**: Proposed production drift monitoring framework (KS-test, PSI > 0.2, rolling MAE alerts).
-11. **Documentation**: Embedded searchable data dictionary documenting all 82 variables.
-12. **About / Internship**: Project credentials, technical competencies, responsible AI ethics.
+## 5. Relational SQL Analytics Layer
+
+HouseWise AI includes an embedded SQLite 3 database (`data/db/housewise.db`) populated with 2,930 cleaned property records and indexed for high-concurrency analytical queries:
+
+- `01_schema.sql`: Table DDL, primary keys, and composite indexes.
+- `02_market_overview.sql`: Macro market aggregates (\$529.73M total capitalization, \$180.8k mean price).
+- `03_neighborhood_price_per_sqft.sql`: Submarket rankings by price per sqft using `DENSE_RANK() OVER()`.
+- `04_quality_condition_matrix.sql`: Quality-condition cross-tabulations.
+- `05_property_age_depreciation.sql`: Vintage cohort depreciation (Pre-1950 vs Modern cohorts).
+- `06_remodel_roi_impact.sql`: Renovation ROI and modernization price premiums.
+- `07_basement_living_area_value.sql`: Finished basement space value contribution.
+- `08_garage_capacity_premiums.sql`: Marginal dollar premium per additional car stall using `LAG() OVER()`.
+- `09_bath_ratio_analysis.sql`: Value scaling by bathroom-to-bedroom ratios.
+- `10_neighborhood_volatility_tiers.sql`: Submarket price dispersion and quartile tiers via `NTILE(4) OVER()`.
+- `11_outlier_divergence_candidates.sql`: Micro-market valuation divergence identification.
+- `12_temporal_sales_velocity.sql`: Calendar month transaction velocity and seasonality patterns.
 
 ---
 
-## 8. Installation & Quickstart
+## 6. Setup & Installation Instructions
 
 ### Prerequisites
-- Python 3.10+ (Tested on Python 3.13.5 Windows 64-bit)
+- Python 3.10+ (Tested extensively on Python 3.13.5 Windows 64-bit).
+- Git installed.
 
-### Step 1: Clone & Install Dependencies
-```powershell
+### Step 1: Clone Repository & Create Virtual Environment
+```bash
+# Clone repository
+git clone https://github.com/Kishore/HouseWise-AI.git
+cd ibm
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+.\venv\Scripts\activate
+# macOS / Linux:
+source venv/bin/activate
+```
+
+### Step 2: Install Dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### Step 2: Fetch Raw Dataset & Run Profiling
-```powershell
-python scripts/fetch_data.py
-python scripts/profile_data.py
+### Step 3: Initialize Database & Run SQL Analytics
+```bash
+python scripts/setup_sql_analytics.py
 ```
 
-### Step 3: Train Models & Run Benchmark Suite
-```powershell
-python scripts/train.py
+### Step 4: Run Automated Verification Tests
+```bash
+pytest -v
 ```
 
-### Step 4: Run Automated Tests & Health Check
-```powershell
-pytest tests/ -v
-python scripts/project_health_check.py
+### Step 5: Launch the 12-Page Streamlit Web Platform
+```bash
+streamlit run app/app.py --server.port 8501
 ```
+Open **`http://localhost:8501`** in any web browser to access the full platform.
 
-### Step 5: Launch Dashboard on Localhost
-```powershell
-streamlit run app/app.py
-```
-Open your browser to `http://localhost:8501`.
-
----
-
-## 9. Example Prediction via CLI
-```powershell
+### Step 6: CLI Property Valuation (Optional)
+```bash
 python scripts/predict.py --sample
 ```
-**Output**:
-```text
-==================================================
-  HOUSEWISE AI — VALUATION ESTIMATE
-==================================================
-  Estimated Valuation:       $192,612
-  Calibrated 80% Interval:   $175,302 – $212,849
-  Model Engine:              XGBoost (v1.0.0)
-  Holdout Test MAE:          $13,835
-
-  Top Positive Price Drivers:
-    1. OverallQual (+0.068 log impact)
-    2. TotalBath (+0.048 log impact)
-    3. YearBuilt (+0.016 log impact)
-
-  Property Profile:
-    • Living Area (1,650 sq ft) is 14% above the Ames market median (1,442 sq ft).
-    • Construction Quality rating is 7/10 (Market median: 6/10).
-==================================================
-```
 
 ---
 
-## 10. Responsible AI & Governance
-- **Demographic Neutrality**: The system strictly uses physical asset characteristics, room counts, and zoning classes; no protected personal attributes are collected.
-- **Fairness & Transparency**: Calibrated 80% prediction intervals accompany every estimate.
-- **Prohibited Uses**: Prohibited for automated mortgage denial, credit rating, or insurance underwriting without human review.
+## 7. Submission Deliverables Manifest
+
+This repository contains all four required capstone submission deliverables in the project root:
+
+| Deliverable Name | File Path in Root | Format & Specification |
+| :--- | :--- | :--- |
+| **1. Code File (Notebook)** | [`Kishore_HouseWise_AI.ipynb`](file:///c:/Users/Kishore/Documents/ibm/Kishore_HouseWise_AI.ipynb)<br>[`YourName_ProjectName.ipynb`](file:///c:/Users/Kishore/Documents/ibm/YourName_ProjectName.ipynb) | Complete, fully executed end-to-end Jupyter Notebook with all 14 stages, markdown commentary, EDA plots, 18-model CV tournament, SHAP waterfalls, SQL queries, and knapsack optimization. |
+| **Executable Script** | [`Kishore_HouseWise_AI.py`](file:///c:/Users/Kishore/Documents/ibm/Kishore_HouseWise_AI.py) | Standalone Python pipeline reproducing the complete data, SQL, ML, SHAP, and prescriptive workflow. |
+| **2. Requirements File** | [`requirements.txt`](file:///c:/Users/Kishore/Documents/ibm/requirements.txt) | Complete list of all Python dependencies with pinned minimum versions for exact reproducibility. |
+| **3. Project Report** | [`Kishore_ProjectReport.docx`](file:///c:/Users/Kishore/Documents/ibm/Kishore_ProjectReport.docx)<br>[`YourName_ProjectReport.docx`](file:///c:/Users/Kishore/Documents/ibm/YourName_ProjectReport.docx) | Comprehensive 22-section Microsoft Word document featuring executive styling, embedded figures, model tables, SHAP importance charts, and prescriptive business frameworks. |
+| **4. README File** | [`README.md`](file:///c:/Users/Kishore/Documents/ibm/README.md)<br>[`README`](file:///c:/Users/Kishore/Documents/ibm/README) | Complete overview, dataset provenance links, architecture diagrams, installation instructions, and tournament benchmarks. |
 
 ---
 
-## 11. Project Structure
-```
-housewise-ai/
-├── config/              # Central YAML configurations
-├── data/raw/            # Authoritative Ames Housing data & codebook
-├── data/processed/      # Isolated train/test parquet splits
-├── docs/                # PRD, Architecture, Data Dictionary, Methodology, Scripts
-├── models/production/   # Serialized model (.joblib) & metadata (.json)
-├── reports/             # Model card, final report, benchmark, figures, tables
-├── scripts/             # Ingestion, profiling, training, evaluation, CLI predict
-├── src/                 # Modular Python source (data, features, models, evaluation, inference)
-├── app/                 # 12-page Streamlit application with custom corporate CSS
-└── tests/               # Automated pytest unit test suite
-```
+## 8. Prescriptive Capital Allocation & Operational Tiers
+
+HouseWise AI formulates a **Property Prioritization Index (PPI)**:
+
+$$\text{PPI} = 0.40 \cdot \text{Upside} + 0.30 \cdot \text{RemodelPotential} + 0.20 \cdot \text{NeighborhoodQuality} + 0.10 \cdot \text{Liquidity}$$
+
+### 4-Tier Operational Investment Playbook
+- **Tier 1: Deep Value Opportunity ($\Delta\% \ge +10.0\%$)**: Immediate cash acquisition signal; substantial equity cushion.
+- **Tier 2: Fair Market Value ($-5.0\% \le \Delta\% < +10.0\%$)**: Standard transaction range; normal mortgage underwriting.
+- **Tier 3: Overvaluation Risk ($-15.0\% \le \Delta\% < -5.0\%$)**: Price renegotiation required; demand seller concessions or appraisal contingency.
+- **Tier 4: Speculative / High Volatility ($\Delta\% < -15.0\%$ or $> +30.0\%$)**: Forensic inspection hold; investigate unpermitted additions or distressed sale conditions.
 
 ---
 
-## 12. Author & Internship Evaluation Credentials
-- **Project**: HouseWise AI — Explainable House Price Intelligence Platform
-- **Category**: Data Science + Machine Learning Engineering + Business Intelligence
-- **Evaluation**: Developed for professional internship capstone evaluation.
+## 9. Author & Project Metadata
+
+- **Author / Lead Engineer**: Kishore
+- **Project Title**: HouseWise AI — Interactive Explainable House Price Analytics & ML Platform
+- **Track**: IBM SkillsBuild / Enterprise Data Science & Machine Learning Capstone
+- **Local Application URL**: `http://localhost:8501`
+- **Verification Status**: **100% Production Ready** (All 14 tests passing, 0 errors)

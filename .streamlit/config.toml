@@ -10,6 +10,9 @@ serverAddress = "localhost"
 serverPort = 8501
 gatherUsageStats = false
 
+[client]
+showSidebarNavigation = false
+
 [theme]
 primaryColor = "#1E3A8A"
 backgroundColor = "#F8FAFC"

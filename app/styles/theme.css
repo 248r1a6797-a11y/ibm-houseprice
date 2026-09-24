@@ -1,118 +1,438 @@
-/* Corporate Analytics Theme for HouseWise AI */
+/* ==========================================================================
+   HouseWise AI — Enterprise Design System & Modern SaaS UI Theme
+   ========================================================================== */
 
-html, body, [class*="css"] {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --primary: #1E3A8A;
+    --primary-light: #3B82F6;
+    --primary-dark: #172554;
+    --primary-surface: #EFF6FF;
+    --accent: #2563EB;
+    --accent-glow: rgba(37, 99, 235, 0.15);
+    
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+
+    --success: #16A34A;
+    --success-surface: #F0FDF4;
+    --success-border: #BBF7D0;
+    
+    --warning: #D97706;
+    --warning-surface: #FFFBEB;
+    --warning-border: #FDE68A;
+
+    --danger: #DC2626;
+    --danger-surface: #FEF2F2;
+    --danger-border: #FECACA;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
 
-/* Metric Cards */
-.kpi-container {
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    padding: 16px 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin-bottom: 12px;
+/* Base App Body & Typography */
+html, body, [class*="st-"], .stApp {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    color: var(--slate-800);
+    background-color: #F8FAFC;
 }
 
-.kpi-title {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #64748B;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
+/* App Header & Chrome */
+header[data-testid="stHeader"] {
+    background: rgba(248, 250, 252, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--slate-200);
 }
 
-.kpi-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #0F172A;
-    line-height: 1.2;
+.stDeployButton, div[data-testid="stToolbar"] {
+    display: none !important;
 }
 
-.kpi-subtext {
-    font-size: 0.8rem;
-    color: #64748B;
-    margin-top: 4px;
+.block-container {
+    padding-top: 1.5rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1360px !important;
 }
 
-/* Section Containers */
+/* Sidebar Customization */
+section[data-testid="stSidebar"] {
+    background: #FFFFFF !important;
+    border-right: 1px solid var(--slate-200) !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+}
+
+section[data-testid="stSidebar"] > div {
+    padding-top: 1.2rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/* Clean Sidebar Radio Navigation - HIDE ALL UGLY BULLET CIRCLES */
+div[data-testid="stSidebar"] div[role="radiogroup"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+}
+
+/* Force-hide radio inputs, SVGs, and indicator circles */
+div[data-testid="stSidebar"] div[role="radiogroup"] input[type="radio"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+}
+
+div[data-testid="stSidebar"] div[role="radiogroup"] label > div:first-of-type,
+div[data-testid="stSidebar"] div[role="radiogroup"] label > span:first-of-type,
+div[data-testid="stSidebar"] div[role="radiogroup"] label svg {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Modern navigation items */
+div[data-testid="stSidebar"] div[role="radiogroup"] > label {
+    background: #FFFFFF !important;
+    padding: 8px 12px !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 2px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+    border: 1px solid transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+div[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+    background: var(--slate-100) !important;
+    border-color: var(--slate-200) !important;
+}
+
+div[data-testid="stSidebar"] div[role="radiogroup"] > label:hover p {
+    color: var(--slate-900) !important;
+}
+
+/* Active / Checked Navigation Item */
+div[data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"],
+div[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+    background: #EFF6FF !important;
+    border: 1px solid #BFDBFE !important;
+    border-left: 4px solid var(--accent) !important;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08) !important;
+}
+
+div[data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] p,
+div[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p {
+    color: #1D4ED8 !important;
+    font-weight: 700 !important;
+}
+
+div[data-testid="stSidebar"] div[role="radiogroup"] > label p {
+    font-size: 0.86rem !important;
+    font-weight: 500 !important;
+    color: var(--slate-700) !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
+
+/* Selectboxes & Dropdowns */
+.stSelectbox div[data-baseweb="select"] {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--slate-300) !important;
+    background: #FFFFFF !important;
+    transition: all 0.2s ease;
+}
+
+.stSelectbox div[data-baseweb="select"]:hover {
+    border-color: var(--slate-400) !important;
+}
+
+.stSelectbox div[data-baseweb="select"]:focus-within {
+    border-color: var(--accent) !important;
+    box-shadow: var(--shadow-focus) !important;
+}
+
+/* Buttons - Modern SaaS Styling */
+.stButton button {
+    border-radius: var(--radius-md) !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    padding: 0.55rem 1.25rem !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: 1px solid var(--slate-300) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.stButton button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Primary Action Buttons */
+.stButton button[kind="primary"] {
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(30, 58, 138, 0.25) !important;
+}
+
+.stButton button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #172554 0%, #1D4ED8 100%) !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35) !important;
+}
+
+/* Streamlit Tabs - Sleek Segmented Control */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: var(--slate-100);
+    padding: 5px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    margin-bottom: 20px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 38px;
+    border-radius: var(--radius-md) !important;
+    padding: 0 16px !important;
+    background: transparent !important;
+    border: none !important;
+    color: var(--slate-600) !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    transition: all 0.18s ease;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: var(--slate-900) !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: #FFFFFF !important;
+    color: var(--primary) !important;
+    box-shadow: var(--shadow-sm) !important;
+    font-weight: 700 !important;
+}
+
+.stTabs [data-baseweb="tab-highlight"] {
+    display: none !important;
+}
+
+/* Card Section Containers */
 .card-section {
     background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    padding: 22px 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-lg);
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card-section:hover {
+    border-color: var(--slate-300);
+    box-shadow: var(--shadow-md);
 }
 
 .card-title {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: #1E293B;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #F1F5F9;
-    padding-bottom: 8px;
+    font-weight: 700;
+    color: var(--slate-900);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Prediction Output Card */
+/* Native Streamlit Metric Cards */
+div[data-testid="stMetric"] {
+    background: #FFFFFF !important;
+    border: 1px solid var(--slate-200) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: 16px 20px !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all 0.2s ease !important;
+}
+
+div[data-testid="stMetric"]:hover {
+    border-color: #BFDBFE !important;
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px) !important;
+}
+
+div[data-testid="stMetricLabel"] p {
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    color: var(--slate-500) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-bottom: 4px !important;
+}
+
+div[data-testid="stMetricValue"] {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: var(--slate-900) !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
+
+div[data-testid="stMetricDelta"] {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+}
+
+/* Metric / KPI Cards */
+.kpi-container {
+    background: #FFFFFF;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.kpi-container:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: #BFDBFE;
+}
+
+.kpi-title {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+}
+
+.kpi-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--slate-900);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.kpi-subtext {
+    font-size: 0.78rem;
+    color: var(--slate-500);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Prediction Output Card (Hero Valuation Display) */
 .prediction-box {
-    background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #2563EB 100%);
     color: #FFFFFF;
-    border-radius: 8px;
-    padding: 24px 28px;
-    box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.2);
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+    box-shadow: 0 12px 25px -4px rgba(30, 58, 138, 0.35);
     margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.prediction-box::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
 }
 
 .prediction-title {
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: #93C5FD;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
 }
 
 .prediction-val {
-    font-size: 2.6rem;
-    font-weight: 700;
+    font-size: 3.2rem;
+    font-weight: 800;
     color: #FFFFFF;
-    margin: 8px 0;
+    margin: 6px 0;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .prediction-interval {
-    font-size: 0.95rem;
+    font-size: 1.02rem;
     color: #DBEAFE;
     font-weight: 500;
 }
 
-/* Framework Cards (Fact-Insight-Opportunity-Action) */
-.framework-card {
-    background: #FFFFFF;
-    border: 1px solid #CBD5E1;
-    border-left: 4px solid #1E3A8A;
-    border-radius: 6px;
-    padding: 18px 22px;
-    margin-bottom: 18px;
+/* Number Inputs and Text Inputs */
+div[data-baseweb="input"] {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--slate-300) !important;
+    background: #FFFFFF !important;
+    transition: all 0.2s ease;
 }
 
-.framework-pill {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+div[data-baseweb="input"]:focus-within {
+    border-color: var(--accent) !important;
+    box-shadow: var(--shadow-focus) !important;
 }
 
-.pill-fact { background: #E0F2FE; color: #0369A1; }
-.pill-insight { background: #FEF3C7; color: #B45309; }
-.pill-opp { background: #DCFCE7; color: #15803D; }
-.pill-action { background: #EDE9FE; color: #6D28D9; }
+/* Sliders */
+div[data-testid="stSlider"] > div {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
 
-/* Table styling */
-.dataframe {
-    font-size: 0.85rem !important;
+/* Dataframe & Tables */
+div[data-testid="stDataFrame"] {
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+/* Progress Bar */
+.stProgress > div > div > div > div {
+    background: linear-gradient(90deg, #2563EB 0%, #10B981 100%) !important;
+    border-radius: 9999px !important;
+}
+
+/* Alerts and Notices */
+.stAlert {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* Spacers */
+.section-spacer {
+    height: 16px;
 }
